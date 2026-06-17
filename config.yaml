@@ -3,7 +3,7 @@ server:
   base_url: http://localhost:8080
 
 database:
-  url: postgres://postgres:postgres@localhost:5432/url_shortening_service
+  url: postgres://postgres:postgres@localhost:5432/url_shortening_service?sslmode=disable
 
 redis:
   url: localhost:6379

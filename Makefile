@@ -1,4 +1,4 @@
-.PHONY: help up down restart rebuild logs logs-app logs-postgres logs-redis ps clean shell-app shell-postgres shell-redis db-shell redis-cli test health
+.PHONY: help up down restart rebuild logs logs-app logs-postgres logs-redis ps clean shell-app shell-postgres shell-redis db-shell redis-cli test test-unit test-e2e health
 
 # Default target: show help
 help:
@@ -117,11 +117,17 @@ health:
 	@echo "🏥 Checking health endpoint..."
 	@curl -s http://localhost:8080/health | jq '.' || echo "❌ Health check failed"
 
-# Run tests (placeholder for future)
+# Run unit tests
+test-unit:
+	@echo "🧪 Running unit tests..."
+	go test ./internal/... -v
+
+# Run E2E tests (requires running services)
+test-e2e:
+	@echo "🧪 Running E2E tests..."
+	go test ./test/e2e -v
+
+# Run all tests
 test:
-	@echo "🧪 Running tests..."
-	@echo "Health Check:"
-	@curl -s http://localhost:8080/health | jq '.'
-	@echo ""
-	@echo "Container Status:"
-	@make ps
+	@echo "🧪 Running all tests..."
+	go test ./... -v
