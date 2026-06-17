@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/starquill/URL-Shortening-Service/internal/cache"
 	"github.com/starquill/URL-Shortening-Service/internal/config"
 	"github.com/starquill/URL-Shortening-Service/internal/database"
 	"github.com/starquill/URL-Shortening-Service/internal/handler"
@@ -37,6 +39,19 @@ func main() {
 	// Initialize store
 	urlStore := store.NewURLStore(pool)
 	log.Printf("url store initialized: %v", urlStore != nil)
+
+	// Connect to Redis
+	ttl, err := time.ParseDuration(cfg.Redis.TTL)
+	if err != nil {
+		log.Fatalf("invalid redis ttl: %v", err)
+	}
+
+	redisCache, err := cache.NewRedisCache(cfg.Redis.URL, "", 0, ttl)
+	if err != nil {
+		log.Fatalf("failed to connect to redis: %v", err)
+	}
+	defer redisCache.Close()
+	log.Println("redis cache initialized")
 
 	r := chi.NewRouter()
 	r.Get("/health", handler.Health)
