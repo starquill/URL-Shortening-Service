@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/rs/cors"
 	"github.com/starquill/URL-Shortening-Service/internal/cache"
 	"github.com/starquill/URL-Shortening-Service/internal/config"
 	"github.com/starquill/URL-Shortening-Service/internal/database"
@@ -63,6 +64,21 @@ func main() {
 
 	// Setup router
 	r := chi.NewRouter()
+
+	// Enable CORS
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   cfg.Cors.AllowedOrigins,
+		AllowedMethods:   cfg.Cors.AllowedMethods,
+		AllowedHeaders:   cfg.Cors.AllowedHeaders,
+		AllowCredentials: true,
+	})
+	r.Use(corsHandler.Handler)
+
+	// Serve static files from frontend build
+	fileServer := http.FileServer(http.Dir("./frontend/build"))
+	r.Handle("/static/*", fileServer)
+	r.Handle("/favicon.ico", fileServer)
+	r.Handle("/manifest.json", fileServer)
 
 	// Health check
 	r.Get("/health", handler.Health)
