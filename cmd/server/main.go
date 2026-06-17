@@ -11,6 +11,7 @@ import (
 	"github.com/starquill/URL-Shortening-Service/internal/cache"
 	"github.com/starquill/URL-Shortening-Service/internal/config"
 	"github.com/starquill/URL-Shortening-Service/internal/database"
+	"github.com/starquill/URL-Shortening-Service/internal/generator"
 	"github.com/starquill/URL-Shortening-Service/internal/handler"
 	"github.com/starquill/URL-Shortening-Service/internal/store"
 )
@@ -52,6 +53,10 @@ func main() {
 	}
 	defer redisCache.Close()
 	log.Println("redis cache initialized")
+
+	// Initialize short code generator
+	codeGenerator := generator.NewShortCodeGenerator(urlStore, 7)
+	log.Printf("short code generator initialized: %v", codeGenerator != nil)
 
 	r := chi.NewRouter()
 	r.Get("/health", handler.Health)
