@@ -58,8 +58,25 @@ func main() {
 	codeGenerator := generator.NewShortCodeGenerator(urlStore, 7)
 	log.Printf("short code generator initialized: %v", codeGenerator != nil)
 
+	// Initialize URL handler
+	urlHandler := handler.NewURLHandler(urlStore, redisCache, codeGenerator, cfg.Server.BaseURL)
+
+	// Setup router
 	r := chi.NewRouter()
+
+	// Health check
 	r.Get("/health", handler.Health)
+
+	// Redirect endpoint (must come before /api routes)
+	r.Get("/{code}", urlHandler.RedirectURL)
+
+	// API endpoints
+	r.Post("/shorten", urlHandler.CreateShortURL)
+	r.Route("/api/urls/{code}", func(r chi.Router) {
+		r.Get("/", urlHandler.GetURL)
+		r.Put("/", urlHandler.UpdateURL)
+		r.Delete("/", urlHandler.DeleteURL)
+	})
 
 	address := fmt.Sprintf(":%d", cfg.Server.Port)
 	log.Printf("server listening on %s", address)
