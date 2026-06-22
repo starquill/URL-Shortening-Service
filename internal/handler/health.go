@@ -15,6 +15,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	html := `<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>URL Shortening Service</title>
     <style>
         body {
@@ -31,7 +32,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
             border-radius: 16px;
             backdrop-filter: blur(10px);
         }
-        h1 { margin-top: 0; }
+        h1 { margin-top: 0; font-size: 2.5em; }
+        h2 { margin-top: 32px; font-size: 1.8em; }
         .endpoint {
             background: rgba(255, 255, 255, 0.2);
             padding: 16px;
@@ -46,16 +48,24 @@ func Home(w http.ResponseWriter, r *http.Request) {
             border-radius: 4px;
             font-weight: bold;
             margin-right: 8px;
+            font-size: 13px;
         }
         a { color: #fff; text-decoration: underline; }
+        .footer {
+            margin-top: 40px;
+            opacity: 0.8;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔗 URL Shortening Service</h1>
+        <h1>URL Shortening Service</h1>
         <p>A production-ready API for shortening URLs with Redis caching and PostgreSQL storage.</p>
 
-        <h2>📡 API Endpoints</h2>
+        <h2>API Endpoints</h2>
 
         <div class="endpoint">
             <span class="method">POST</span> /shorten
@@ -87,16 +97,16 @@ func Home(w http.ResponseWriter, r *http.Request) {
             <br>Health check
         </div>
 
-        <h2>📚 Documentation</h2>
-        <p>Full API documentation: <a href="https://github.com/starquill/URL-Shortening-Service">GitHub Repository</a></p>
+        <h2>Documentation</h2>
+        <p>Full API documentation: <a href="https://github.com/starquill/URL-Shortening-Service" target="_blank">GitHub Repository</a></p>
 
-        <p style="margin-top: 40px; opacity: 0.8; font-size: 14px;">
+        <div class="footer">
             Built with Go + PostgreSQL + Redis | Deployed on Render
-        </p>
+        </div>
     </div>
 </body>
 </html>`
-	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(html))
 }
