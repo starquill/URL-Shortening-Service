@@ -2,6 +2,10 @@
 
 A production-ready URL shortener built with Go, PostgreSQL, Redis, and React. Features cryptographically secure short code generation, caching, analytics, and a modern web interface.
 
+**🌐 Live Demo:** [https://url-shortening-service-dbam.onrender.com](https://url-shortening-service-dbam.onrender.com)
+
+> **Note:** First request may take ~30 seconds to wake up (free tier limitation)
+
 ## 🚀 Features
 
 - **Short URL Generation**: Crypto-secure 7-character codes with collision detection
@@ -240,11 +244,18 @@ Environment variables override config file (e.g., `DATABASE_URL`, `REDIS_URL`).
 ## 🚢 Deployment
 
 This application is deployed on [Render.com](https://render.com) with:
-- Web Service (Go backend)
-- PostgreSQL database
-- Redis Cloud (caching)
+- Web Service (Go backend + React frontend)
+- PostgreSQL database (1GB free tier)
+- Redis Cloud (30MB free tier)
+- Automatic deployments from GitHub
+- Zero-downtime rolling updates
 
-**Live Demo**: Coming soon!
+**🌐 Live Demo:** [https://url-shortening-service-dbam.onrender.com](https://url-shortening-service-dbam.onrender.com)
+
+**Architecture in Production:**
+```
+GitHub Push → Render Webhook → Docker Build → Deploy → Live
+```
 
 ## 📊 Key Features & Implementation
 
