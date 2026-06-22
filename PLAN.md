@@ -87,46 +87,45 @@ Example commit messages:
 
 ---
 
-## Phase 3 — Deploy (AWS)
+## Phase 3 — Deploy (FREE - Fly.io)
 
-### Step 1: Containerize
+### Step 1: Containerize ✅
 - Finalize multi-stage `Dockerfile` (build stage → minimal runtime image)
 - Test the production Docker image locally
+- Create `fly.toml` configuration
 
-### Step 2: AWS Setup
-- Create an AWS account and configure IAM roles and permissions
-- Install and configure the AWS CLI
+### Step 2: Fly.io Setup
+- Install Fly CLI (`brew install flyctl`)
+- Sign up for free account (no credit card required)
+- Authenticate with `flyctl auth login`
 
-### Step 3: Push Image to ECR
-- Create an ECR repository
-- Build and tag the Docker image
-- Push image to ECR
+### Step 3: Launch App
+- Run `flyctl launch` to create app
+- Provision PostgreSQL database (free tier)
+- Provision Redis instance (free tier)
+- Configure environment variables
 
-### Step 4: Database — RDS
-- Provision a Postgres instance on RDS
-- Configure security groups so ECS can connect to RDS
-- Run migrations against the RDS instance
+### Step 4: Deploy
+- Run `flyctl deploy` to build and deploy
+- Verify migrations run automatically
+- Test all endpoints on live URL
 
-### Step 5: Cache — ElastiCache
-- Provision a Redis cluster on ElastiCache
-- Configure security groups so ECS can connect to ElastiCache
-
-### Step 6: Run on ECS Fargate
-- Create an ECS cluster and task definition
-- Point the task to the ECR image
-- Inject environment variables (DB URL, Redis URL, port) via ECS task config
-- Set up an Application Load Balancer (ALB) for HTTPS termination
-- Deploy the service
-
-### Step 7: CI/CD with GitHub Actions
-- Write `.github/workflows/ci.yml` — run tests on every push
+### Step 5: CI/CD with GitHub Actions (Optional)
 - Write `.github/workflows/deploy.yml` — on merge to `main`:
   - Build Docker image
-  - Push to ECR
-  - Deploy new task revision to ECS
+  - Deploy to Fly.io using `flyctl deploy`
 
-### Step 8: Final Checks
+### Step 6: Final Checks
 - Verify all 5 API endpoints work on the live URL
-- Test CORS from the hosted frontend
-- Check cache hit/miss behaviour in production
-- Monitor logs via CloudWatch
+- Test redirect functionality
+- Check cache behavior in production
+- Monitor logs via `flyctl logs`
+
+---
+
+## Phase 3 Alternative — Deploy (AWS) - SKIPPED (Costs Money)
+
+If you want to deploy to AWS instead (not free):
+- See `AWS_DEPLOYMENT.md` for complete guide
+- Estimated cost: $70-75/month (can be reduced with stop/start strategy)
+- Steps: ECR → RDS → ElastiCache → ECS Fargate → ALB → CI/CD

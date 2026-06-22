@@ -1,6 +1,13 @@
-# Documentation (AI-generated, not version controlled)
+# Documentation (Keep only README.md)
+*.md
+!README.md
+PLAN.md
 AWS_DEPLOYMENT.md
 TESTING_GUIDE.md
+RENDER_DEPLOYMENT.md
+FRONTEND_GUIDE.md
+DOCKER_COMMANDS.md
+README_MAKEFILE.md
 
 # Binaries
 bin/
