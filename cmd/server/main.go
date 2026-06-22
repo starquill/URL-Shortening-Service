@@ -74,20 +74,8 @@ func main() {
 	})
 	r.Use(corsHandler.Handler)
 
-	// Serve static files from frontend build
-	fileServer := http.FileServer(http.Dir("./frontend/build"))
-	r.Handle("/static/*", fileServer)
-	r.Handle("/favicon.ico", fileServer)
-	r.Handle("/manifest.json", fileServer)
-
-	// Homepage
-	r.Get("/", handler.Home)
-
 	// Health check
 	r.Get("/health", handler.Health)
-
-	// Redirect endpoint (must come before /api routes)
-	r.Get("/{code}", urlHandler.RedirectURL)
 
 	// API endpoints
 	r.Post("/shorten", urlHandler.CreateShortURL)
@@ -95,6 +83,20 @@ func main() {
 		r.Get("/", urlHandler.GetURL)
 		r.Put("/", urlHandler.UpdateURL)
 		r.Delete("/", urlHandler.DeleteURL)
+	})
+
+	// Redirect endpoint (before static files)
+	r.Get("/{code:[a-zA-Z0-9]{3,20}}", urlHandler.RedirectURL)
+
+	// Serve frontend static files
+	fileServer := http.FileServer(http.Dir("./frontend/build"))
+	r.Handle("/static/*", fileServer)
+	r.Handle("/favicon.ico", fileServer)
+	r.Handle("/manifest.json", fileServer)
+
+	// Serve React app for root and all other routes (SPA fallback)
+	r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./frontend/build/index.html")
 	})
 
 	address := fmt.Sprintf(":%d", cfg.Server.Port)
