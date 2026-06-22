@@ -80,6 +80,9 @@ func main() {
 	r.Handle("/favicon.ico", fileServer)
 	r.Handle("/manifest.json", fileServer)
 
+	// Homepage
+	r.Get("/", handler.Home)
+
 	// Health check
 	r.Get("/health", handler.Health)
 
