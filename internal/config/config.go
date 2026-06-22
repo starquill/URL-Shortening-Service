@@ -50,5 +50,19 @@ func Load() (Config, error) {
 		return Config{}, err
 	}
 
+	// Override with environment variables if set
+	v.SetEnvPrefix("")
+	v.BindEnv("server.base_url", "BASE_URL")
+	v.BindEnv("database.url", "DATABASE_URL")
+	v.BindEnv("redis.url", "REDIS_URL")
+	v.BindEnv("redis.password", "REDIS_PASSWORD")
+	v.BindEnv("redis.ttl", "REDIS_TTL")
+
+	cfg.Server.BaseURL = v.GetString("server.base_url")
+	cfg.Database.URL = v.GetString("database.url")
+	cfg.Redis.URL = v.GetString("redis.url")
+	cfg.Redis.Password = v.GetString("redis.password")
+	cfg.Redis.TTL = v.GetString("redis.ttl")
+
 	return cfg, nil
 }
