@@ -1,2 +1,32 @@
+# Git
 .git
-bin
+.gitignore
+
+# Documentation
+*.md
+PLAN.md
+README.md
+FRONTEND_GUIDE.md
+
+# IDE
+.vscode
+.idea
+
+# Dependencies (will be downloaded in build)
+vendor/
+
+# Testing
+test/
+*_test.go
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+bin/
+
+# Frontend (not needed in backend image)
+frontend/node_modules/
+frontend/build/
+frontend/.env

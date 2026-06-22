@@ -1,0 +1,25 @@
+# Documentation (AI-generated, not version controlled)
+AWS_DEPLOYMENT.md
+TESTING_GUIDE.md
+
+# Binaries
+bin/
+server
+
+# Test coverage
+*.out
+coverage.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
