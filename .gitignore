@@ -11,7 +11,7 @@ README_MAKEFILE.md
 
 # Binaries
 bin/
-server
+/server
 
 # Test coverage
 *.out

@@ -20,8 +20,9 @@ type DatabaseConfig struct {
 }
 
 type RedisConfig struct {
-	URL string `mapstructure:"url"`
-	TTL string `mapstructure:"ttl"`
+	URL      string `mapstructure:"url"`
+	Password string `mapstructure:"password"`
+	TTL      string `mapstructure:"ttl"`
 }
 
 type CORSConfig struct {

@@ -48,7 +48,7 @@ func main() {
 		log.Fatalf("invalid redis ttl: %v", err)
 	}
 
-	redisCache, err := cache.NewRedisCache(cfg.Redis.URL, "", 0, ttl)
+	redisCache, err := cache.NewRedisCache(cfg.Redis.URL, cfg.Redis.Password, 0, ttl)
 	if err != nil {
 		log.Fatalf("failed to connect to redis: %v", err)
 	}
